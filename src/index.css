@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------
+   THEME TOKENS  (same 4 skins + Hindi / Marathi font swap as original)
+------------------------------------------------------------------- */
+:root {
+  --bg: #f7f0e2; --bg2: #efe3cb; --surface: #fffaf0; --ink: #3a2a1c; --muted: #7a6650;
+  --gold: #a97c22; --gold2: #e3c26a; --line: rgba(169,124,34,.38); --petal: #d98a8a;
+  --door1: #7a1f30; --door2: #4a1120; --onacc: #fff8e6; --glow: rgba(227,194,106,.55);
+  --display: 'Cormorant Garamond','Times New Roman',serif;
+  --script: 'Pinyon Script','Snell Roundhand',cursive;
+  --sans: 'Jost','Helvetica Neue',Arial,sans-serif;
+  color-scheme: light;
+}
+:root[data-skin='emerald'] { --bg:#06231c;--bg2:#031511;--surface:#0b2d25;--ink:#f3ead2;--muted:#b4c2b2;--gold:#d9b45a;--gold2:#f4dc94;--line:rgba(217,180,90,.4);--petal:#e8c97a;--door1:#0f4a3a;--door2:#06281f;--onacc:#06231c;--glow:rgba(244,220,148,.45);color-scheme:dark }
+:root[data-skin='rose'] { --bg:#fbeff0;--bg2:#f4dcdf;--surface:#fff7f7;--ink:#4a2430;--muted:#8a5e68;--gold:#b0606c;--gold2:#e8b4a8;--line:rgba(176,96,108,.38);--petal:#e59aa6;--door1:#c98b94;--door2:#a5646f;--onacc:#fff4f4;--glow:rgba(232,180,168,.6);color-scheme:light }
+:root[data-skin='sapphire'] { --bg:#0b1230;--bg2:#070b20;--surface:#121b45;--ink:#eef0fa;--muted:#aab2d6;--gold:#d6b867;--gold2:#f2dfa2;--line:rgba(214,184,103,.4);--petal:#9fb3ff;--door1:#1b2a6b;--door2:#0d1544;--onacc:#0b1230;--glow:rgba(242,223,162,.4);color-scheme:dark }
+:root[lang='hi'], :root[lang='mr'] {
+  --display: 'Tiro Devanagari Hindi','Cormorant Garamond',serif;
+  --sans: 'Noto Sans Devanagari','Jost',sans-serif;
+}
+
+/* ------------------------------------------------------------------
+   BASE
+------------------------------------------------------------------- */
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-bg text-ink font-sans font-light text-base leading-[1.7] overflow-x-hidden;
+    transition: background .6s, color .6s;
+  }
+  body.lock { overflow: hidden; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+}
+
+/* ------------------------------------------------------------------
+   REUSABLE COMPONENT CLASSES (built from Tailwind utilities)
+------------------------------------------------------------------- */
+@layer components {
+  .glass {
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    backdrop-filter: blur(10px);
+  }
+  .sec {
+    @apply relative max-w-[1040px] mx-auto px-4 text-center;
+    padding-top: clamp(56px, 10vw, 104px);
+    padding-bottom: clamp(56px, 10vw, 104px);
+  }
+  .eyebrow { @apply text-[.74rem] tracking-[.4em] uppercase text-gold font-medium; }
+  .h2t {
+    @apply font-display font-medium leading-[1.15] mt-[.35em] mb-[.2em];
+    font-size: clamp(2rem, 6.5vw, 3.1rem);
+    text-wrap: balance;
+  }
+  .card { @apply relative bg-surface border border-line rounded-md px-[22px] py-7; }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 min-h-[46px] px-[26px] rounded-full border border-gold
+      text-onacc font-medium tracking-[.12em] uppercase text-[.78rem] no-underline cursor-pointer
+      transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_var(--glow)];
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+  }
+  .btn.ghost { @apply text-gold; background: none; }
+  .lab { @apply block text-[.74rem] tracking-[.2em] uppercase text-muted mb-1.5; }
+  .hint { @apply text-[.8rem] text-muted m-0; }
+  .field {
+    @apply w-full px-3.5 py-3 border border-line rounded bg-bg text-ink text-base transition;
+  }
+  .field:focus {
+    outline: 0;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 22%, transparent);
+  }
+  /* scroll reveal */
+  .rv {
+    opacity: .55; transform: translateY(18px);
+    transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1);
+  }
+  .rv.in { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
